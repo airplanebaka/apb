@@ -196,7 +196,17 @@ source ~/.bashrc
 
 ## 5、Quartus安装
 
+下载Quartus安装包
 
+* [https://fpgasoftware.intel.com/?edition=lite](https://fpgasoftware.intel.com/?edition=lite)
+
+![&#x9009;&#x62E9;Lite&#x7248;&#x672C;&#xFF08;&#x4E0D;&#x6536;&#x8D39;&#xFF09;&#xFF0C;&#x7248;&#x672C;&#x9009;&#x62E9;18.0&#x53CA;&#x5176;&#x4EE5;&#x4E0A;](.gitbook/assets/image%20%282%29.png)
+
+![&#x5B89;&#x88C5;&#x672C;&#x4F53;&#x548C;&#x4EFF;&#x771F;Modelsim&#x53CA;&#x8BBE;&#x5907;Cyclone 10 LP](.gitbook/assets/image%20%283%29.png)
+
+下载安装完成后即可打开代码仓库中的Quartus工程
+
+* [https://github.com/oscourse-tsinghua/undergraduate-hqing2020](https://github.com/oscourse-tsinghua/undergraduate-hqing2020)
 
 
 
