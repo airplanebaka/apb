@@ -22,11 +22,28 @@ description: 简介
 >
 > [https://moon548834.github.io/cyc10-rcore-tutorial/Chap2/2-0-hardware.html](https://moon548834.github.io/cyc10-rcore-tutorial/Chap2/2-0-hardware.html)
 
-该cpu是经典的5级流水线架构，支持m态和s态特权级，并且具有mmu单元与tlb，无cache设计。
+        该cpu是经典的5级流水线架构，支持m态和s态特权级，并且具有mmu单元与tlb，无cache设计。
 
-soc则基于《自己动手写CPU》\(雷思磊\)结构，采用的是wishbone总线，其中sdram使用的是开源代码，uart为参考文档作者编写\(为了节省资源，只支持发送功能，且只有一个端口，波特率写死，无ready位\)，片外flash目前尚不清楚如何工作，故采用片内rom，使用intel的.hex文件进行例化。总线交互也采用的是开源代码。
+        soc则基于《自己动手写CPU》\(雷思磊\)结构，采用的是wishbone总线，其中sdram使用的是开源代码，uart为参考文档作者编写\(为了节省资源，只支持发送功能，且只有一个端口，波特率写死，无ready位\)，片外flash目前尚不清楚如何工作，故采用片内rom，使用intel的.hex文件进行例化。总线交互也采用的是开源代码。
 
+### FPGA平台
 
+        本实验使用的开发板为小脚丫的STEP-CYC10，芯片号为10CL016YU256C8G，一款基于Intel Cyclone10设计的FPGA开发板。板卡上集成了USB Blaster编程器、SDRAM、FLASH等多种外设。板上预留了PCIE子卡插座，可方便进行扩展。
+
+![&#x5F00;&#x53D1;&#x677F;](.gitbook/assets/image%20%284%29.png)
+
+开发板资源如下：
+
+| 资源种类 | 数量 | 资源种类 | 数量 |
+| :--- | :--- | :--- | :--- |
+| LE资源 | 16000 | 可扩展 STEP-PCIE接口 | 1个 |
+| 片上存储空间 | 504Kbit | 集成 USB Blaster编程器 | 1个 |
+| DSP blocks | 56个 | SDRAM | 64Mbit |
+| PLL | 4路 | Flash | 64Mbit |
+| Micro USB接口 | 2路 | 三轴加速度计 ADXL345 | 1个 |
+| 数码管 | 4位 | USB转Uart桥接芯片 CP2102 | 1个 |
+| RGB 三色LED | 2个 | 12M与50M双路时钟源 | 1个 |
+| 5向按键 | 1路 | LED | 8路 |
 
 
 
