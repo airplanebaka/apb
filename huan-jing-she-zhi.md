@@ -97,6 +97,39 @@ cd /opt/idea-IU-173.4548.28/bin
 
 
 
+## 4、RISCV交叉编译链
+
+安装过程参考
+
+* [https://moon548834.github.io/cyc10-rcore-tutorial/Chap1/1-0-environment.html\#riscv%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E9%93%BE](https://moon548834.github.io/cyc10-rcore-tutorial/Chap1/1-0-environment.html#riscv%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E9%93%BE)
+
+安装命令
+
+```text
+sudo apt-get install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
+git clone --recursive https://github.com/riscv/riscv-gnu-toolchain
+cd riscv-gnu-toolchain
+./configure --prefix=/opt/riscv --with-arch=rv32ima --with-abi=ilp32
+make -j4
+
+*从Github仓库获得安装链需要好网络，谨慎操作*
+*make需要花费大量时间，耐心等待*
+*更详细的参数请参考 https://github.com/riscv/riscv-gnu-toolchain 的说明*
+```
+
+```text
+// 添加环境配置
+~/.bashrc
+PATH=/opt/riscv/bin:$PATH
+source ~/.bashrc
+```
+
+## 5、Quartus安装
+
+
+
+
+
 
 
 
