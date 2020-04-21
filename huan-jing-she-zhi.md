@@ -13,7 +13,7 @@
 
 将下载的安装包拷贝到想要安装的目录
 
-```text
+```scala
 // 解压安装包
 tar -xzvf jdk-8u241-linux-x64.tar.gz
 
@@ -41,7 +41,7 @@ java -version
 
 将下载的安装包移动到安装java包的目录
 
-```text
+```scala
 // 解压安装包
 tar zxvf sbt-x.x.x.tgz
 
@@ -52,17 +52,17 @@ vim sbt
 #!/bin/bash
 BT_OPTS="-Xms2048M -Xmx4096M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
 java $SBT_OPTS -jar /home/soft/sbt/bin/sbt-launch.jar "$@"
-*注意更改/home/soft/为你的安装目录*
+// *注意更改/home/soft/为你的安装目录*
  
 // 修改sbt文件权限
 chmod u+x sbt
 
 // 配置sbt环境变量
 vim /etc/profile
-*在末尾添加*
+// *在末尾添加*
 export SBT_HOME=/home/soft/sbt
 export PATH=${SBT_HOME}/bin:$PATH
-*注意更改/home/soft/为你的安装目录*
+// *注意更改/home/soft/为你的安装目录*
 
 // 生效配置
 source /etc/profile
@@ -80,7 +80,7 @@ sbt -version
 
 * [https://www.jetbrains.com/idea/download](https://www.jetbrains.com/idea/download)
 
-```text
+```scala
 // 安装intellij
 // 在sudo环境下安装
 tar -xf ideaIU-2017.3.4-no-jdk.tar.gz
@@ -90,12 +90,82 @@ cd /opt/idea-IU-173.4548.28/bin
 // 运行intellij
 ./idea.sh
 
-*注意修改自己的版本号和安装地址*
+// *注意修改自己的版本号和安装地址*
 ```
 
 ### 安装Scala支持
 
+随意建立一个工程，创建完毕后选择File -&gt; Setting，选择选项卡中的Plugins，搜索Scala，安装人气最高的那个插件，等安装完后重启intelij。
 
+请自行测试是否能运行scala文件，既编写hello world测试。
+
+### 安装Chisel支持
+
+![&#x5982;&#x56FE;&#x9009;&#x62E9;Scala&#x4E2D;&#x7684;sbt&#x521B;&#x5EFA;&#x5DE5;&#x7A0B;](.gitbook/assets/image.png)
+
+![&#x8BBE;&#x5B9A;&#x597D;JDK&#x548C;Scala SDK](.gitbook/assets/image%20%281%29.png)
+
+```scala
+// 打开左侧project中的build.sbt
+// 替换为如下代码
+def scalacOptionsVersion(scalaVersion: String): Seq[String] = {
+  Seq() ++ {
+    // If we're building with Scala > 2.11, enable the compile option
+    //  switch to support our anonymous Bundle definitions:
+    //  https://github.com/scala/bug/issues/10047
+    CrossVersion.partialVersion(scalaVersion) match {
+      case Some((2, scalaMajor: Long)) if scalaMajor < 12 => Seq()
+      case _ => Seq("-Xsource:2.11")
+    }
+  }
+}
+
+def javacOptionsVersion(scalaVersion: String): Seq[String] = {
+  Seq() ++ {
+    // Scala 2.12 requires Java 8. We continue to generate
+    //  Java 7 compatible code for Scala 2.11
+    //  for compatibility with old clients.
+    CrossVersion.partialVersion(scalaVersion) match {
+      case Some((2, scalaMajor: Long)) if scalaMajor < 12 =>
+        Seq("-source", "1.7", "-target", "1.7")
+      case _ =>
+        Seq("-source", "1.8", "-target", "1.8")
+    }
+  }
+}
+
+
+name := "c_t_1" // 工程名自行更改
+
+version := "0.1" // 版本参考未替换前
+
+scalaVersion := "2.11.12" // 参考自己安装的Scala版本
+
+crossScalaVersions := Seq("2.11.12", "2.12.4")
+
+resolvers ++= Seq(
+  Resolver.sonatypeRepo("snapshots"),
+  Resolver.sonatypeRepo("releases")
+)
+
+// Provide a managed dependency on X if -DXVersion="" is supplied on the command line.
+val defaultVersions = Map(
+  "chisel3" -> "3.2-SNAPSHOT",
+  "chisel-iotesters" -> "1.3-SNAPSHOT"
+)
+
+libraryDependencies ++= Seq("chisel3","chisel-iotesters").map {
+  dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep)) }
+
+scalacOptions ++= scalacOptionsVersion(scalaVersion.value)
+
+javacOptions ++= javacOptionsVersion(scalaVersion.value)
+
+// 配置完后保存，软件自动开始下载所需要的依赖
+// 下载依赖需要访问外放，请自动选择相关操作
+```
+
+依赖和配置成功后就可以编写Chisel代码了
 
 ## 4、RISCV交叉编译链
 
@@ -105,19 +175,19 @@ cd /opt/idea-IU-173.4548.28/bin
 
 安装命令
 
-```text
+```scala
 sudo apt-get install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
 git clone --recursive https://github.com/riscv/riscv-gnu-toolchain
 cd riscv-gnu-toolchain
 ./configure --prefix=/opt/riscv --with-arch=rv32ima --with-abi=ilp32
 make -j4
 
-*从Github仓库获得安装链需要好网络，谨慎操作*
-*make需要花费大量时间，耐心等待*
-*更详细的参数请参考 https://github.com/riscv/riscv-gnu-toolchain 的说明*
+// *从Github仓库获得安装链需要好网络，谨慎操作*
+// *make需要花费大量时间，耐心等待*
+// *更详细的参数请参考 https://github.com/riscv/riscv-gnu-toolchain 的说明*
 ```
 
-```text
+```scala
 // 添加环境配置
 ~/.bashrc
 PATH=/opt/riscv/bin:$PATH
