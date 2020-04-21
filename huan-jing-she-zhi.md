@@ -1,6 +1,6 @@
 # 第一章 相关环境设置
 
-## 安装Java开发环境
+## 1、安装Java开发环境
 
 ### 下载JAVA
 
@@ -32,9 +32,7 @@ source ~/.bashrc
 java -version
 ```
 
-
-
-## 安装SBT工具
+## 2、安装SBT工具
 
 进入官网下载
 
@@ -74,9 +72,32 @@ sbt -version
 
 ```
 
+## 3、安装Chisel开发软件
+
+安装前说明：Java一定要安装成功
+
+### intellij下载
+
+* [https://www.jetbrains.com/idea/download](https://www.jetbrains.com/idea/download)
+
+```text
+// 安装intellij
+// 在sudo环境下安装
+tar -xf ideaIU-2017.3.4-no-jdk.tar.gz
+mv idea-IU-173.4548.28 /opt
+cd /opt/idea-IU-173.4548.28/bin
+
+// 运行intellij
+./idea.sh
+
+*注意修改自己的版本号和安装地址*
+```
+
+### 安装Scala支持
 
 
-## 安装Chisel开发软件
+
+
 
 
 
